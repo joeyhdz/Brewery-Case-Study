@@ -1,3 +1,14 @@
+---
+title: "project 1 markdown"
+author: "Joey Hernandez, and Robert Blue"
+date: "2022-10-18"
+output: html_document
+---
+## Introduction:
+#### Thank you Mr.Smith, and Mr. Jones for the opportunity for us to deliver Beer and Brewery insights so that your company Booze and Brews can align it's strategic plan for growth, and offerings so that you can maximize revenues and grow your presence.
+
+First, we will being by loading all packages and data that we will need to investigate and present findings of beer and breweries:
+```{r}
 library(tidyverse)
 library(ggplot2)
 library(janitor)
@@ -7,9 +18,50 @@ library(e1071)
 library(class)
 beer_data <-read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Beers.csv")
 brew_data <- read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Breweries.csv")
+```
 
+## Data at a glance & Missing Vaules
+
+
+#### During our initial consultation, you mentioned the data could contain some missing values as well as some potential errors. In order for us to present the most accurate findings, we took a series of steps to ensure that any errors or missing values were either addressed or corrected.
+
+
+##### Step 1 --- 
+##### Identify the rows and columns of the data sets. This first glance allows us to understand what type of variables and variable types we are working with, additionally, we are able to understand the size of data that we have.
+
+
+#### Step 2 ---
+#### Viewing the datasets allowed us to identify similar columns within the 2 groups that we could use to merge the data. Merging the data together allows us to create a dataframe that contains all we need in one location. We will not yet merge the data within this step but we do take action and rename any columns that may be of intrest. What you will find if you look at the data is that we changed both data brewery identification columns to the title 'Brewery_id' so that we could merge the data with this as our bridge variable. 
+
+
+#### Step 3 ---
+#### Before merging the data together we checked each dataset individually for missing values and broke them into explicit and implicit missing values
+
+
+#### Step 4 ---
+#### Addressed Explicit (NAs)
+
+
+#### Step 5 ---
+#### Addressed Implicit (Missing Data)
+
+
+#### Step 6 ---
+#### Addressing Duplicates
+
+
+#### Step 7 ---
+#### Cleaning White space
+
+
+#### Step 8 ---
+#### Merging the data
+
+
+
+```{r}
 #################### Exploring Raw Data ###########################
-# check rows
+# check rows and columns
 head(beer_data)
 head(brew_data)
 
@@ -20,10 +72,10 @@ names(brew_data)[1]<- 'Brewery_id'
 
 
 # checking for missing values beer 
-sapply(beer_data,function(x) sum(is.na(x))/nrow(beers_data))
+sapply(beer_data,function(x) sum(is.na(x))/nrow(beer_data))
 sapply(beer_data,function(x) sum(x== ""))
-# checking for missing values brew
 
+# checking for missing values brew
 sapply(brew_data,function(x) sum(is.na(x))/nrow(brew_data))
 sapply(brew_data,function(x) sum(x== ""))
 
@@ -57,7 +109,7 @@ brew_data$State<-trimws(brew_data$State, "left")
 beer_brew <- merge(brew_data, beer, by ='Brewery_id')
 
 
-
+```
 ################################### code for later ##################################
 
 state_brew <- na.omit(master_data)
