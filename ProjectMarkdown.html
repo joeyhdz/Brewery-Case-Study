@@ -419,66 +419,63 @@ contain some missing values as well as some potential errors. In order
 for us to present the most accurate findings, we took a series of steps
 to ensure that any errors or missing values were either addressed or
 corrected.</h4>
-<div id="step-1" class="section level5">
-<h5>Step 1 —</h5>
-</div>
 <div id="identify-the-rows-and-columns-of-the-data-sets.-this-first-glance-allows-us-to-understand-what-type-of-variables-and-variable-types-we-are-working-with-additionally-we-are-able-to-understand-the-size-of-data-that-we-have." class="section level5">
-<h5>Identify the rows and columns of the data sets. This first glance
+<h5>1. Identify the rows and columns of the data sets. This first glance
 allows us to understand what type of variables and variable types we are
 working with, additionally, we are able to understand the size of data
 that we have.</h5>
 </div>
-</div>
-<div id="step-2" class="section level4">
-<h4>Step 2 —</h4>
-</div>
-<div id="viewing-the-datasets-allowed-us-to-identify-similar-columns-within-the-2-groups-that-we-could-use-to-merge-the-data.-merging-the-data-together-allows-us-to-create-a-dataframe-that-contains-all-we-need-in-one-location.-we-will-not-yet-merge-the-data-within-this-step-but-we-do-take-action-and-rename-any-columns-that-may-be-of-intrest.-what-you-will-find-if-you-look-at-the-data-is-that-we-changed-both-data-brewery-identification-columns-to-the-title-brewery_id-so-that-we-could-merge-the-data-with-this-as-our-bridge-variable." class="section level4">
-<h4>Viewing the datasets allowed us to identify similar columns within
-the 2 groups that we could use to merge the data. Merging the data
-together allows us to create a dataframe that contains all we need in
-one location. We will not yet merge the data within this step but we do
-take action and rename any columns that may be of intrest. What you will
-find if you look at the data is that we changed both data brewery
+<div id="viewing-the-datasets-allowed-us-to-identify-similar-columns-within-the-2-groups-that-we-could-use-to-merge-the-data.-merging-the-data-together-allows-us-to-create-a-dataframe-that-contains-all-we-need-in-one-location.-we-will-not-yet-merge-the-data-within-this-step-but-we-do-take-action-and-rename-any-columns-that-may-be-of-intrest.-what-you-will-find-if-you-look-at-the-data-is-that-we-changed-both-data-brewery-identification-columns-to-the-title-brewery_id-so-that-we-could-merge-the-data-with-this-as-our-bridge-variable." class="section level5">
+<h5>2. Viewing the datasets allowed us to identify similar columns
+within the 2 groups that we could use to merge the data. Merging the
+data together allows us to create a dataframe that contains all we need
+in one location. We will not yet merge the data within this step but we
+do take action and rename any columns that may be of intrest. What you
+will find if you look at the data is that we changed both data brewery
 identification columns to the title ‘Brewery_id’ so that we could merge
-the data with this as our bridge variable.</h4>
+the data with this as our bridge variable.</h5>
 </div>
-<div id="step-3" class="section level4">
-<h4>Step 3 —</h4>
-</div>
-<div id="before-merging-the-data-together-we-checked-each-dataset-individually-for-missing-values-and-broke-them-into-explicit-and-implicit-missing-values" class="section level4">
-<h4>Before merging the data together we checked each dataset
+<div id="before-merging-the-data-together-we-checked-each-dataset-individually-for-missing-values-and-broke-them-into-explicit-and-implicit-missing-values." class="section level5">
+<h5>3. Before merging the data together we checked each dataset
 individually for missing values and broke them into explicit and
-implicit missing values</h4>
+implicit missing values.</h5>
 </div>
-<div id="step-4" class="section level4">
-<h4>Step 4 —</h4>
+<div id="we-addressed-explicit-values-nas-by-investigating-why-there-may-have-been-expliciltly-missing-values-in-the-data.-upon-further-investigation-we-discovered-that-certain-values-are-not-always-reported-or-are-required-to-be-reported-by-breweries.-this-varies-from-brewery-to-brewery-but-most-often-has-to-do-with-state-and-other-governing-matters.-in-the-case-of-missing-ibu-values-this-also-varies-from-location-to-location-and-can-be-attributed-to-differnent-crafting-methods-in-addition-to-simply-not-being-required-to-report.-we-did-not-completely-leave-out-this-data-but-instead-left-it-as-na-when-applicaple-since-it-represented-such-a-high-amount-of-data." class="section level5">
+<h5>4. We addressed Explicit Values (NAs) by investigating why there may
+have been expliciltly missing values in the data. Upon further
+investigation we discovered that certain values are not always reported
+(or are required to be reported) by breweries. This varies from brewery
+to brewery but most often has to do with state and other governing
+matters. In the case of missing IBU values this also varies from
+location to location and can be attributed to differnent crafting
+methods in addition to simply not being required to report. We did not
+completely leave out this data, but instead left it as NA when
+applicaple since it represented such a high amount of data.</h5>
 </div>
-<div id="addressed-explicit-nas" class="section level4">
-<h4>Addressed Explicit (NAs)</h4>
+<div id="the-data-did-contain-some-implicit-values-in-the-form-of-missing-data.-upon-futher-investigation-we-were-able-to-either-remedy-the-missing-values-by-researching-the-product-in-question-or-gain-an-understanding-of-why-a-value-may-not-have-been-present-so-that-we-could-understand-how-it-would-impact-the-remaning-data-or-if-it-impacted-the-remaining-data." class="section level5">
+<h5>5. The data did contain some Implicit values in the form of missing
+data. Upon futher investigation we were able to either remedy the
+missing values by researching the product in question, or gain an
+understanding of why a value may not have been present so that we could
+understand how it would impact the remaning data (or if it impacted the
+remaining data).</h5>
 </div>
-<div id="step-5" class="section level4">
-<h4>Step 5 —</h4>
+<div id="there-was-instances-of-duplicate-data-which-were-attributed-to-incorrect-brewery-locations-or-were-attributed-to-repeated-batches-of-an-offering-as-well-as-different-sizes-of-certain-drinks.-the-remedy-was-addressed-on-a-case-by-case-basis-but-in-short-the-only-data-removed-was-data-that-was-incorrect-such-as-the-duplicate-locations-entered-by-spelling-or-typo-errors." class="section level5">
+<h5>6. There was instances of duplicate data which were attributed to
+incorrect brewery locations, or were attributed to repeated batches of
+an offering as well as different sizes of certain drinks. The remedy was
+addressed on a case by case basis, but in short the only data removed
+was data that was incorrect, such as the duplicate locations entered by
+spelling, or typo errors.</h5>
 </div>
-<div id="addressed-implicit-missing-data" class="section level4">
-<h4>Addressed Implicit (Missing Data)</h4>
+<div id="while-not-a-big-issue-the-state-abbreviations-all-contained-some-white-space-before-the-actual-charater-of-the-string.-this-white-space-was-removed-to-better-utilize-the-variable." class="section level5">
+<h5>7. While not a big issue, the state abbreviations all contained some
+white space before the actual charater of the string. This white space
+was removed to better utilize the variable.</h5>
 </div>
-<div id="step-6" class="section level4">
-<h4>Step 6 —</h4>
-</div>
-<div id="addressing-duplicates" class="section level4">
-<h4>Addressing Duplicates</h4>
-</div>
-<div id="step-7" class="section level4">
-<h4>Step 7 —</h4>
-</div>
-<div id="cleaning-white-space" class="section level4">
-<h4>Cleaning White space</h4>
-</div>
-<div id="step-8" class="section level4">
-<h4>Step 8 —</h4>
-</div>
-<div id="merging-the-data" class="section level4">
-<h4>Merging the data</h4>
+<div id="finally-after-all-found-errors-were-addressed-we-merged-the-data-into-one-piece." class="section level5">
+<h5>8. Finally after all found errors were addressed, we merged the data
+into one piece.</h5>
 <pre class="r"><code>#################### Exploring Raw Data ###########################
 # check rows and columns
 head(beer_data)</code></pre>
@@ -9881,6 +9878,7 @@ beer_brew &lt;- merge(brew_data, beer, by =&#39;Brewery_id&#39;)</code></pre>
 <p>state_brew &lt;- na.omit(master_data) state_brew %&gt;%
 get_dupes(Brew_name) unique(state_brew)</p>
 <p>casestudy &lt;- na.omit(casestudy) # to omit NA values.</p>
+</div>
 </div>
 </div>
 </div>
