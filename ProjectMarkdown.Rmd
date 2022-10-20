@@ -3,8 +3,8 @@ title: "Booze and Brews - Case Study"
 author: "Joey Hernandez and Robert Blue"
 date: "2022-10-18"
 output:
+  github_document: default
   html_document: default
-  pdf_document: default
 ---
 ## Introduction:
 #### Thank you Mr. Smith, and Mr. Jones for the opportunity for us to deliver Beer and Brewery insights so that your company Booze and Brews can align it's strategic plan for growth, and future offerings so that you can maximize revenues and grow your presence.
@@ -48,27 +48,27 @@ brew_data <- read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Breweries.csv")
 
 #### During our initial consultation, you mentioned the data could contain some missing values as well as some potential errors. In order for us to present the most accurate findings, we took a series of steps to ensure that any errors or missing values were either addressed or corrected.
 
-##### 1.  Identify the rows and columns of the data sets. This first glance allows us to understand what type of variables and variable types we are working with, additionally, we are able to understand the size of data that we have.
+1.  Identify the rows and columns of the data sets. This first glance allows us to understand what type of variables and variable types we are working with, additionally, we are able to understand the size of data that we have.
 
-##### 2.  Viewing the datasets allowed us to identify similar columns within the 2 groups that we could use to merge the data. Merging the data together allows us to create a dataframe that contains all we need in one location. We will not yet merge the data within this step but we do take action and rename any columns that may be of intrest. What you will find if you look at the data is that we changed both data brewery identification columns to the title 'Brewery_id' so that we could merge the data with this as our bridge variable.
-
-
-##### 3.  Before merging the data together we checked each dataset individually for missing values and broke them into explicit and implicit missing values.
+2.  Viewing the datasets allowed us to identify similar columns within the 2 groups that we could use to merge the data. Merging the data together allows us to create a dataframe that contains all we need in one location. We will not yet merge the data within this step but we do take action and rename any columns that may be of intrest. What you will find if you look at the data is that we changed both data brewery identification columns to the title 'Brewery_id' so that we could merge the data with this as our bridge variable.
 
 
-##### 4.  We addressed Explicit Values (NAs) by investigating why there may have been expliciltly missing values in the data. Upon further investigation we discovered that certain values are not always reported (or are required to be reported) by breweries. This varies from brewery to brewery but most often has to do with state and other governing matters. In the case of missing IBU values this also varies from location to location and can be attributed to differnent crafting methods in addition to simply not being required to report. We did not completely leave out this data, but instead left it as NA when applicaple since it represented such a high amount of data.
+3.  Before merging the data together we checked each dataset individually for missing values and broke them into explicit and implicit missing values.
 
 
-##### 5.  The data did contain some Implicit values in the form of missing data. Upon futher investigation we were able to either remedy the missing values by researching the product in question, or gain an understanding of why a value may not have been present so that we could understand how it would impact the remaning data (or if it impacted the remaining data).
+4.  We addressed Explicit Values (NAs) by investigating why there may have been expliciltly missing values in the data. Upon further investigation we discovered that certain values are not always reported (or are required to be reported) by breweries. This varies from brewery to brewery but most often has to do with state and other governing matters. In the case of missing IBU values this also varies from location to location and can be attributed to differnent crafting methods in addition to simply not being required to report. We did not completely leave out this data, but instead left it as NA when applicaple since it represented such a high amount of data.
 
 
-##### 6.  There was instances of duplicate data which were attributed to incorrect brewery locations, or were attributed to repeated batches of an offering as well as different sizes of certain drinks. The remedy was addressed on a case by case basis, but in short the only data removed was data that was incorrect, such as the duplicate locations entered by spelling, or typo errors. 
+5.  The data did contain some Implicit values in the form of missing data. Upon futher investigation we were able to either remedy the missing values by researching the product in question, or gain an understanding of why a value may not have been present so that we could understand how it would impact the remaning data (or if it impacted the remaining data).
 
 
-##### 7.  While not a big issue, the state abbreviations all contained some white space before the actual charater of the string. This white space was removed to better utilize the variable.
+6.  There was instances of duplicate data which were attributed to incorrect brewery locations, or were attributed to repeated batches of an offering as well as different sizes of certain drinks. The remedy was addressed on a case by case basis, but in short the only data removed was data that was incorrect, such as the duplicate locations entered by spelling, or typo errors. 
 
 
-##### 8. Finally after all found errors were addressed, we merged the data into one piece.
+7.  While not a big issue, the state abbreviations all contained some white space before the actual charater of the string. This white space was removed to better utilize the variable.
+
+
+8. Finally after all found errors were addressed, we merged the data into one piece.
 
 ```{r warning=FALSE}
 #################### Exploring Raw Data ###########################
