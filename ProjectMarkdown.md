@@ -91,11 +91,11 @@ brew_data <- read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Breweries.csv")
     are working with, additionally, we are able to understand the size
     of data that we have.
 
-2.  Viewing the datasets allowed us to identify similar columns within
+2.  Viewing the data sets allowed us to identify similar columns within
     the 2 groups that we could use to merge the data. Merging the data
-    together allows us to create a dataframe that contains all we need
+    together allows us to create a data frame that contains all we need
     in one location. We will not yet merge the data within this step but
-    we do take action and rename any columns that may be of intrest.
+    we do take action and rename any columns that may be of interest.
     What you will find if you look at the data is that we changed both
     data brewery identification columns to the title ‘Brewery_id’ so
     that we could merge the data with this as our bridge variable.
@@ -105,21 +105,21 @@ brew_data <- read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Breweries.csv")
     implicit missing values.
 
 4.  We addressed Explicit Values (NAs) by investigating why there may
-    have been expliciltly missing values in the data. Upon further
+    have been explicitly missing values in the data. Upon further
     investigation we discovered that certain values are not always
     reported (or are required to be reported) by breweries. This varies
     from brewery to brewery but most often has to do with state and
     other governing matters. In the case of missing IBU values this also
-    varies from location to location and can be attributed to differnent
+    varies from location to location and can be attributed to different
     crafting methods in addition to simply not being required to report.
     We did not completely leave out this data, but instead left it as NA
-    when applicaple since it represented such a high amount of data.
+    when applicable since it represented such a high amount of data.
 
 5.  The data did contain some Implicit values in the form of missing
-    data. Upon futher investigation we were able to either remedy the
+    data. Upon further investigation we were able to either remedy the
     missing values by researching the product in question, or gain an
     understanding of why a value may not have been present so that we
-    could understand how it would impact the remaning data (or if it
+    could understand how it would impact the remaining data (or if it
     impacted the remaining data).
 
 6.  There was instances of duplicate data which were attributed to
@@ -130,7 +130,7 @@ brew_data <- read.csv("C:/Users/Joey/Desktop/DDS_Work/Unit - 8/Breweries.csv")
     locations entered by spelling, or typo errors.
 
 7.  While not a big issue, the state abbreviations all contained some
-    white space before the actual charater of the string. This white
+    white space before the actual character of the string. This white
     space was removed to better utilize the variable.
 
 8.  Finally after all found errors were addressed, we merged the data
@@ -226,7 +226,7 @@ plot_usmap(data=state_brew_plot[,1:2],
            labels = TRUE,label_color = "black",
            values = "num_brew") +
           scale_fill_gradient(low = 'white', high = 'red')+
-          labs(title = 'Distribution of Breweries across the United States',
+          labs(title = 'Distribution of Breweries Across The United States',
                fill = "Brewery \nAmount") +
           theme(legend.position = "right") 
 ```
@@ -261,66 +261,68 @@ brews_per_state
 
 ![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
+##### Please note that the table below contain a NaN value. This is because SD (South Dakota) only contains data for 1 brewery which did not report their IBU. When the data was filtered to remove Non-Value IBU data it kept SD because it still must be represented in this table to illustrate the Number of Breweries in each State.
+
 ``` r
 # table for display in RMD file
 kable(state_num_data %>% group_by(State) %>%
-summarise(num_brew = n_distinct(Brew_name),
-mean_abv = mean(ABV), mean_ibu = mean(IBU)) %>%
-arrange(desc(num_brew)))
+summarise(Num_Brew = n_distinct(Brew_name),
+          Mean_ABV = mean(na.omit(ABV)), Mean_IBU = mean(na.omit(IBU))) %>%
+arrange(desc(Num_Brew)))
 ```
 
-| State | num_brew |  mean_abv | mean_ibu |
+| State | Num_Brew |  Mean_ABV | Mean_IBU |
 |:------|---------:|----------:|---------:|
-| CO    |       46 |        NA |       NA |
-| CA    |       39 | 0.0599231 |       NA |
-| MI    |       32 |        NA |       NA |
-| OR    |       29 | 0.0568276 |       NA |
-| TX    |       28 |        NA |       NA |
-| PA    |       24 |        NA |       NA |
-| WA    |       23 | 0.0584348 |       NA |
-| IN    |       22 | 0.0608182 |       NA |
-| MA    |       22 | 0.0575455 |       NA |
-| NC    |       19 |        NA |       NA |
-| WI    |       19 | 0.0522632 |       NA |
-| IL    |       18 | 0.0581111 |       NA |
-| NY    |       16 |        NA |       NA |
-| FL    |       15 |        NA |       NA |
-| OH    |       15 | 0.0661333 |       NA |
-| VA    |       15 | 0.0593333 |       NA |
-| AZ    |       11 |        NA |       NA |
-| MN    |       11 | 0.0630909 |       NA |
-| ME    |        9 | 0.0570000 |       NA |
-| MO    |        9 | 0.0605556 |       NA |
-| MT    |        9 |        NA |       NA |
-| VT    |        9 | 0.0563333 |       NA |
-| AK    |        7 | 0.0522857 |       NA |
-| CT    |        7 | 0.0581429 |       NA |
-| GA    |        7 | 0.0532857 |       NA |
-| MD    |        7 | 0.0578571 |       NA |
-| OK    |        6 | 0.0580000 |       NA |
-| IA    |        5 | 0.0574000 |       NA |
-| ID    |        5 | 0.0636000 |       NA |
-| LA    |        5 | 0.0580000 |       NA |
-| NE    |        5 |        NA |       NA |
-| RI    |        5 | 0.0542000 |       NA |
-| HI    |        4 | 0.0505000 |       NA |
-| KY    |        4 | 0.0652500 |       NA |
-| NM    |        4 | 0.0617500 |       NA |
-| SC    |        4 | 0.0615000 |       NA |
-| UT    |        4 | 0.0475000 |       NA |
-| WY    |        4 | 0.0572500 |       NA |
-| AL    |        3 | 0.0626667 |       NA |
+| CO    |       46 | 0.0617333 | 41.82759 |
+| CA    |       39 | 0.0599231 | 42.71429 |
+| MI    |       32 | 0.0571290 | 21.77778 |
+| OR    |       29 | 0.0568276 | 46.65000 |
+| TX    |       28 | 0.0586667 | 46.00000 |
+| PA    |       24 | 0.0597619 | 50.12500 |
+| WA    |       23 | 0.0584348 | 44.64286 |
+| IN    |       22 | 0.0608182 | 47.38462 |
+| MA    |       22 | 0.0575455 | 38.10000 |
+| NC    |       19 | 0.0574444 | 46.80000 |
+| WI    |       19 | 0.0522632 | 31.85714 |
+| IL    |       18 | 0.0581111 | 43.20000 |
+| NY    |       16 | 0.0528667 | 37.54545 |
+| FL    |       15 | 0.0569286 | 43.50000 |
+| OH    |       15 | 0.0661333 | 51.37500 |
+| VA    |       15 | 0.0593333 | 53.84615 |
+| AZ    |       11 | 0.0605000 | 35.40000 |
+| MN    |       11 | 0.0630909 | 60.25000 |
+| ME    |        9 | 0.0570000 | 66.25000 |
+| MO    |        9 | 0.0605556 | 48.20000 |
+| MT    |        9 | 0.0555000 | 48.75000 |
+| VT    |        9 | 0.0563333 | 32.60000 |
+| AK    |        7 | 0.0522857 | 36.60000 |
+| CT    |        7 | 0.0581429 | 51.50000 |
+| GA    |        7 | 0.0532857 | 38.00000 |
+| MD    |        7 | 0.0578571 | 52.50000 |
+| OK    |        6 | 0.0580000 | 20.00000 |
+| IA    |        5 | 0.0574000 | 39.33333 |
+| ID    |        5 | 0.0636000 | 38.75000 |
+| LA    |        5 | 0.0580000 | 34.33333 |
+| NE    |        5 | 0.0663333 | 11.00000 |
+| RI    |        5 | 0.0542000 | 23.00000 |
+| HI    |        4 | 0.0505000 | 22.50000 |
+| KY    |        4 | 0.0652500 | 44.50000 |
+| NM    |        4 | 0.0617500 | 15.00000 |
+| SC    |        4 | 0.0615000 | 17.50000 |
+| UT    |        4 | 0.0475000 | 34.00000 |
+| WY    |        4 | 0.0572500 | 16.33333 |
+| AL    |        3 | 0.0626667 | 53.00000 |
 | KS    |        3 | 0.0483333 | 28.66667 |
-| NH    |        3 | 0.0460000 |       NA |
+| NH    |        3 | 0.0460000 | 15.00000 |
 | NJ    |        3 | 0.0510000 | 43.33333 |
 | TN    |        3 | 0.0500000 | 30.66667 |
-| AR    |        2 | 0.0485000 |       NA |
-| DE    |        2 |        NA |       NA |
+| AR    |        2 | 0.0485000 | 39.00000 |
+| DE    |        2 | 0.0550000 | 52.00000 |
 | MS    |        2 | 0.0575000 | 41.50000 |
-| NV    |        2 |        NA |       NA |
+| NV    |        2 | 0.0500000 | 50.00000 |
 | DC    |        1 | 0.0500000 | 15.00000 |
 | ND    |        1 | 0.0500000 | 32.00000 |
-| SD    |        1 | 0.0550000 |       NA |
+| SD    |        1 | 0.0550000 |      NaN |
 | WV    |        1 | 0.0670000 | 71.00000 |
 
 ## Question of Interest 2:
@@ -435,24 +437,24 @@ names(state_medians)[1] <- 'state'
 state_medians %>% ggplot(aes(x = reorder(state, desc(median_abv)), y = median_abv*100, fill = state))+
   geom_bar(stat='identity', show.legend = FALSE)+
   coord_flip() +
-  ggtitle("Bar Plot of Median Alcohol by Volume (ABV) Values for each State") +
+  ggtitle("Bar Plot of Median Alcohol by Volume (ABV) Values for Each State") +
   xlab("State by Abbreviation")+
   ylab("Median Value of Alcohol by Volume in Percent")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # plot Median IBU
 state_medians %>% ggplot(aes(x = reorder(state, desc(median_ibu)), y = median_ibu, fill = state))+
   geom_bar(stat = 'identity', show.legend = FALSE) +
   coord_flip() +
-  ggtitle("Bar plot of Median IBU Values for each State")+
+  ggtitle("Bar plot of Median IBU Values for Each State")+
   xlab("State by Abbreviation")+
   ylab("Median International Bitterness Units (IBU)")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
 ``` r
 # creating a variable to call for median labels
@@ -468,7 +470,7 @@ abv_state_plot <- plot_usmap(data = state_medians[,1:3],
     x = x, y = y,
     label = scales::number(median_abv * 100, accuracy = 0.01)), color = "black") +
   scale_fill_gradient(low = "white", high = "red") +
-  labs(title = "Distribution of Median ABV per State")
+  labs(title = "Distribution of Median ABV for Each State")
 
 # create the IBU map
 ibu_state_plot <- plot_usmap(data = state_medians[,1:4],
@@ -480,20 +482,20 @@ ibu_state_plot <- plot_usmap(data = state_medians[,1:4],
     x = x, y = y,
     label = scales::number(median_ibu, accuracy = 1)), color = "black") +
   scale_fill_gradient(low = "white", high = "red")+
-  labs(title = "Distribution of Median IBU per State")
+  labs(title = "Distribution of Median IBU for Each State")
 
 # plot the ABV Median state plot
 abv_state_plot
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
 
 ``` r
 # plot the IBU Median state plot
 ibu_state_plot
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-5-4.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
 
 ## Question of Interest 5:
 
@@ -557,7 +559,7 @@ abv_dis_plot %>% ggplot(aes(ABV * 100)) +
   ylab('Frequency') + xlab('Alcohol by Volume in Percent %')
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 summary(beer_brew$ABV * 100)
@@ -589,12 +591,14 @@ ibu_abv_plot <- beer_brew %>% select(IBU,ABV,Style)
 ibu_abv_plot %>% ggplot(aes(x = ABV, y = IBU)) + 
   geom_point(aes(color = Style), show.legend = FALSE) + 
   geom_smooth(se = FALSE, color = "black") +
-  ggtitle("Scatterplot of ABV and IBU Values of All Beer Styles")+xlab("Alcohol by Volume in Percent %")+ylab("Bitterness Rating (IBUs)")
+  ggtitle("Scatterplot of ABV and IBU Values of All Beer Styles") +
+  xlab("Alcohol by Volume in Percent %") +
+  ylab("Bitterness Rating (IBUs)")
 ```
 
     ## `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ### 2. This visualization is the same but filtered for only IPA beverages.
 
@@ -605,12 +609,14 @@ ipa_viz <- ibu_abv_plot %>% filter(str_detect(Style, 'IPA'))
 ipa_viz %>% ggplot(aes(x = ABV, y = IBU)) +
   geom_point(aes(color = Style))+
   geom_smooth(se = FALSE, color = 'black') +
-  ggtitle("Scatterplot of ABV and IBU Values of Only IPA Beer Style")+xlab("Alcohol by Volume in Percent %")+ylab("Bitterness Rating (IBUs)")
+  ggtitle("Scatterplot of ABV and IBU Values of Only IPA Beer Style") +
+  xlab("Alcohol by Volume in Percent %") +
+  ylab("Bitterness Rating (IBUs)")
 ```
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ### 3. Below you will see a scatter plot filtered to visualize the same ABV, IBU relationship with only Ale beverages.
 
@@ -621,12 +627,14 @@ ale_viz <- ibu_abv_plot %>% filter(str_detect(Style, "Ale"))
 ale_viz %>% ggplot(aes(x = ABV, y = IBU)) +
   geom_point(aes( color = Style), show.legend = FALSE) +
   geom_smooth(se = FALSE, color = 'black') +
-  ggtitle("Scatterplot of ABV and IBU Values of Only Ale Beer Style")+xlab("Alcohol by Volume in Percent %")+ylab("Bitterness Rating (IBUs)")
+  ggtitle("Scatterplot of ABV and IBU Values of Only Ale Beer Style") +
+  xlab("Alcohol by Volume in Percent %") +
+  ylab("Bitterness Rating (IBUs)")
 ```
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ### 4. Finally this scatter plot displays the ABV, IBU relationship with styles filterd to include every type that is NOT IPA, or Ale.
 
@@ -637,12 +645,12 @@ else_viz <- ibu_abv_plot %>% filter(!str_detect(Style, "Ale")) %>% filter(!str_d
 else_viz %>% ggplot(aes(x = ABV * 100, y = IBU)) +
   geom_point(aes(color = Style), show.legend = FALSE) +
   geom_smooth(se = FALSE, color = "black") + 
-  ggtitle("Scatterplot of ABV and IBU Values of Beer Styles Other than Ale, or IPA") + xlab("Alcohol by Volume in Percent %")+ylab("Bitterness Rating (IBUs)")
+  ggtitle("Scatterplot of ABV and IBU Values of Beer Styles Other Than Ale, or IPA") + xlab("Alcohol by Volume in Percent %")+ylab("Bitterness Rating (IBUs)")
 ```
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 #### It appears that across most styles of beer there is a positive relationship between IBU and ABV. It is worth discussing however the “Ale” style of beer has somewhat of a curved arguably non-linear relationship. The majority of values in which ABV is greater than 6% appear to be of an equal distribution about the y-axis, and lose their visual power to explain the variance of IBU ratings.
 
@@ -757,7 +765,7 @@ ggplot(beer_knn_plot, aes(Prediction, Truth, fill = (Freq))) +
   ggtitle("Confusion Matrix Categorizing Model Predictions Against Actual Values")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ``` r
 cat('Accuracy:',CM$overall[1]*100,"%",
@@ -825,7 +833,7 @@ plot(seq(1,num_of_k,1),
      ylab = "Mean value of measured Accuracy")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 plot(seq(1, num_of_k, 1),
@@ -835,7 +843,7 @@ plot(seq(1, num_of_k, 1),
      ylab = "Mean value of measured Specificity")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-2.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
 
 ``` r
 plot(seq(1, num_of_k, 1),
@@ -844,4 +852,51 @@ plot(seq(1, num_of_k, 1),
      ylab = "Mean value of measured Sensitivity")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-3.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-3.png)<!-- -->
+
+## Conclusion:
+
+##### The purpose of our research was to investigate the Beer and Brewery data provided by Booze and Brews, and subsequenlty provide the following insights:
+
+1.  The top 5 States with the most Breweries are CO (46), CA (39),
+    MI(32), OR(29), and TX(28).
+
+2.  Missing values within IBU and ABV are likely due to reporting
+    discrepancies between brewery to brewery, or state to state (legal
+    reporting requirement) this data can serve to be helpful in gaining
+    important insight for various markets so we suggest that efforts are
+    applied when able to obtain this information.
+
+3.  The State with the highest Median value for IBU is Maine (ME). The
+    State with the highest Median value for ABV is Washington (DC).
+
+4.  The State with the highest value of ABV is Colorado (CO). The State
+    with the highest value of IBU is Oregon (OR).
+
+5.  The Distribution of Alcohol by Volume across the United States
+    appears to have a right skew to the data. This right skew can be
+    interpreted as a distribution of data in which there tends to be a
+    higher instance of larger values to the right of the median in the
+    data, as opposed to an equal portion of large and small values to
+    the right and left of the mean. A visual representation of this can
+    be viewed below.
+
+6.  Overall It appears that there is a positive relationship between the
+    bitterness of beer and its alcoholic content. We can visualize on a
+    scatter plot that as the bitterness rating increases there tends to
+    be an increase in Alcohol by Volume Percentage (ABV). When we dive
+    deeper into the data and visualize different plots of data It
+    appears that across most styles of beer there is a positive
+    relationship between IBU and ABV. It is worth discussing however the
+    “Ale” style of beer has somewhat of a curved arguably non-linear
+    relationship. The majority of values in which ABV is greater than 6%
+    appear to be of an equal distribution about the y-axis, and lose
+    their visual power to explain the variance of IBU ratings.
+
+7.  We found with our model that it is possible to predict whether a
+    beer is considered an IPA or Ale based on its IBU and ABV values at
+    an Accuracy of 84.64%. The model created to do this is a KNN model
+    which uses neighboring values of a “k” amount around the given input
+    to predict what the classification of the item in question is.
+    Additionally, we created a model to generate the optimal K value so
+    that we could fine tune the parameter to generate accurate results.

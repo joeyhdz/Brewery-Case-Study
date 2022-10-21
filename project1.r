@@ -20,7 +20,7 @@ names(brew_data)[1]<- 'Brewery_id'
 
 
 # checking for missing values beer 
-sapply(beer_data,function(x) sum(is.na(x))/nrow(beers_data))
+sapply(beer_data,function(x) sum(is.na(x))/nrow(beer_data))
 sapply(beer_data,function(x) sum(x== ""))
 # checking for missing values brew
 
@@ -55,23 +55,6 @@ brew_data$State<-trimws(brew_data$State, "left")
 
 # merging beer and brew_data - with an inner join
 beer_brew <- merge(brew_data, beer, by ='Brewery_id')
-
-
-
-################################### code for later ##################################
-
-state_brew <- na.omit(master_data)
-state_brew %>% get_dupes(Brew_name)
-unique(state_brew)
-
-
-casestudy <- na.omit(casestudy) # to omit NA values.
-
-# for creating a table in RMD
-#kable(casestudy %>% group_by(State) %>%
-#summarise(n_unique = n_distinct(Brew_name),
-#mean_abv = mean(abv), mean_ibu = mean(ibu)) %>%
-#arrange(desc(n_unique)))
 
 
 ################################### Question 1 ##################################
@@ -287,3 +270,26 @@ plot(seq(1, num_of_k, 1),
      mean_sensitivity, type = 'l',
      xlab = "Kth value 1:50",
      ylab = "Mean value of measured Sensitivity")
+
+############################ EXTRA EDA ######################################
+# vis for 16 ounces 
+beer_brew %>% select(Ounces, ABV, IBU, State, Brewery_id) %>% filter(Ounces == 16) %>% ggplot(aes(State,Ounces, fill = State))+
+  geom_bar(stat = 'identity',show.legend = FALSE)
+
+
+beer_brew %>% select(Ounces) %>% ggplot(aes(Ounces))+
+  geom_histogram(fill = 'light blue', color = 'black')
+
+
+
+beer_brew %>% select(City, State, IBU, ABV, Style, Ounces) %>% filter(State == "TX") %>%
+  ggplot(aes(City, ABV, color = City))+
+  geom_point(show.legend = FALSE) +
+  coord_flip()+
+  ggtitle("Scatter Plot of Alcohol by Volume Offered in Cities Across Texas") +
+  ylab('Alcohol by Volume (ABV) in Percent %') +
+  xlab('Texas Cities')
+
+
+
+
