@@ -5,7 +5,7 @@ Doing Data Science Project 1 Case Study:
 
 
 The purpose of this project was to create a presentation for a hypothetical audience of the Budweiser CEO and CFO.
-The goal was to address address the 9 questions / items described below. 
+The goal was to address the 9 questions / items described below. 
 1. How many breweries are present in each state?
 2. Merge beer data with the breweries data. Print the first 6 observations and the last six observations to check the merged file.
 3. Address the missing values in each column.
