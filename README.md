@@ -64,3 +64,34 @@ We found with our model that it is possible to predict whether a beer is conside
 The model created to do this is a KNN model which uses neighboring values of a "k"
 amount around the given input to predict what the classification of the item in question is.
 ![image](https://user-images.githubusercontent.com/81498617/197312056-e7197788-2232-4cc2-ba85-8ec70b96e612.png)
+
+
+# Conclusion:
+
+1. The top 5 States with the most Breweries are CO (46), CA (39), MI(32), OR(29), and TX(28). 
+
+
+2. Missing values within IBU and ABV are likely due to reporting discrepancies between brewery to brewery, or state to state (legal reporting requirement) this data can serve to be helpful in gaining important insight for various markets so we suggest that efforts are applied when able to obtain this information. 
+
+
+3. The State with the highest Median value for IBU is Maine (ME).
+The State with the highest Median value for ABV is Washington (DC).
+
+4. The State with the highest value of ABV is Colorado (CO). 
+The State with the highest value of IBU is Oregon (OR). 
+
+5. The Distribution of Alcohol by Volume across the United States appears to have a right skew to the data. This right skew can be interpreted as a distribution of data in which there tends to be a higher instance of larger values to the right of the median in the data, as opposed to an equal portion of large and small values to the right and left of the mean. A visual representation of this can be viewed below. 
+
+6. Overall It appears that there is a positive relationship between the bitterness of beer and its alcoholic content. We can visualize on a scatter plot that as the bitterness rating increases there tends to be an increase in Alcohol by Volume Percentage (ABV). When we dive deeper into the data and visualize different plots of data It appears that across most styles of beer there is a positive relationship between IBU and ABV. It is worth discussing however the "Ale" style of beer has somewhat of a curved arguably non-linear relationship. The majority of values in which ABV is greater than 6% appear to be of an equal distribution about the y-axis, and lose their visual power to explain the variance of IBU ratings.
+
+7. We found with our model that it is possible to predict whether a beer is considered an IPA or Ale based on its IBU and ABV values at an Accuracy of 84.64%. The model created to do this is a KNN model which uses neighboring values of a "k" amount around the given input to predict what the classification of the item in question is. Additionally, we created a model to generate the optimal K value so that we could fine tune the parameter to generate accurate results.
+
+8. Because Booze and Brews is looking to enter the US Brewery market, we thought it would be insightful to visualize data that would provide insight into the style of brew which hold the greatest (or least) market share. The data show us that 73.53% of the brew offerings are of a non-IPA style beverage. This poses an interesting questions such as:
+* Is the current saturation of IPA high or low compared to consumer demand?
+* What is the significance of IPAs in terms of sale numbers as a percentage of goods sold?
+* Does the relative low percentage of IPA representation mean there is an opportunity to enter the market with IPA? Or does it simply speak to the demand of the IPA offerings? 
+
+
+These questions serve as an opportunity to gather a new perspective of data that can provide invaluable insights into the brewery market and some of the demand currently within the market. 
+
+9. Finally, Because Booze and Brews is looking to capture Texas market share, we thought it would be insightful to visualize data that would give insight into the distribution of the type of styling characteristic (IBU, ABV) across Cities in Texas. The Data shows us that the median IBU for Texas is 33, and the median ABV for Texas is 5.5%. This information along with the visualizations below provide us with insights that illustrate which of the stylistic profiles are prominent in these geographical areas. We have visual evidence that there does seem to exist a specific flavor profile that Texans prefer, and investigating this further could prove to assist in establishing a successful brewery with offerings that appeal to the palete of the target audience.
