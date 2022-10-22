@@ -1,5 +1,5 @@
 # Brewery-Case-Study
-Doing Data Science Project 1 Case Study - Beer and Brewery Datasets
+Doing Data Science Project 1 Case Study:
 
 ![Beer   brewery (250 × 250 px)(2)](https://user-images.githubusercontent.com/81498617/197314814-f3e08e0a-38c5-4514-a82c-cd1707ce3060.png)![Beer   brewery (250 × 250 px)(1)](https://user-images.githubusercontent.com/81498617/197314711-1663954e-8e2a-4ed1-a17b-472974db75e8.png)
 
