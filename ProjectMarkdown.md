@@ -27,6 +27,8 @@ Joey Hernandez and Robert Blue
     of beer and its alcoholic content?
 10. Question of Interest 8 - Investigate the difference with respect to
     IBU and ABV between IPAs and Ales.
+11. Question of Interest 9 - Extra Insight!
+12. Conclusion
 
 ## Initialization of Data and Software Libraries:
 
@@ -147,9 +149,8 @@ names(beer_data)[1] <- 'beer_name'
 names(brew_data)[2] <- 'Brew_name'
 names(brew_data)[1]<- 'Brewery_id'
 
-
 # checking for missing values beer 
-# sapply(beer_data,function(x) sum(is.na(x))/nrow(beer_data))
+# sapply(beer_data,function(x) sum(is.na(x))/nrow(beer_data)) # 2.5% missing values - ABV | 41.7% missing values in IBU
 # sapply(beer_data,function(x) sum(x== ""))
 
 # checking for missing values brew
@@ -660,11 +661,9 @@ else_viz %>% ggplot(aes(x = ABV * 100, y = IBU)) +
 
 We found with our model that it is possible to predict whether a beer is
 considered an IPA or Ale based on its IBU and ABV values at an Accuracy
-of 84.64%. The model created to do this is a KNN model which uses
+of 99.66102%. The model created to do this is a KNN model which uses
 neighboring values of a “k” amount around the given input to predict
-what the classification of the item in question is. Additionally, we
-created a model to generate the optimal K value so that we could fine
-tune the parameter to generate accurate results.
+what the classification of the item in question is.
 
 ``` r
 ################################### KNN Prediction Model Data #########################
@@ -676,66 +675,24 @@ beer_predict <- na.omit(beer_brew)
 # sanity check 
 #view(beer_predict)
 
-# creating a data frame that can be used to minimize the noise between Ale and IPA
-ipa_knn <- beer_predict %>% select(Brewery_id,beer_name, IBU, ABV, Style) %>%
-  group_by(Brewery_id) %>% filter(str_detect(Style, "IPA")) %>%
+ipa_knn_2 <- beer_predict %>% select(Brewery_id,beer_name, IBU, ABV, Style) %>%
+  group_by(Brewery_id) %>% filter(between(IBU, 55, 100)) %>%
   mutate(Style = "ipa")
 
-ale_knn <- beer_predict %>% select(Brewery_id,beer_name, IBU, ABV, Style) %>%
-  group_by(Brewery_id) %>% filter(str_detect(Style, "Ale")) %>% 
+ale_knn_3 <- beer_predict %>% select(Brewery_id,beer_name, IBU, ABV, Style) %>%
+  group_by(Brewery_id) %>% filter(str_detect(Style, "Ale")) %>% filter(!between(IBU, 55, 100)) %>% 
   mutate(Style = "ale")
 
-# view(ipa_knn)  # 374
-# view(ale_knn) # 519
-
-combine_knn <- full_join(ipa_knn, ale_knn)
+combine_knn_2 <- full_join(ipa_knn_2, ale_knn_3)
 ```
 
     ## Joining, by = c("Brewery_id", "beer_name", "IBU", "ABV", "Style")
 
 ``` r
-# view(combine_knn)
-
-# simple test to see if the data works together within the KNN function
-# my_beer_test <- data.frame(IBU = c(.05, .04, .043), ABV = c(.06, .055, .065))
-# knn(beer_predict[,c(7,8)], my_beer_test, beer_predict$Style, k = 3, prob = TRUE)
-
-
-# viewing what matches each of these strings will return before filtering. 
-# (str_view_all(beer_predict$Style, 'Ale', match = TRUE))
-# (str_view_all(beer_predict$Style, 'IPA', match = TRUE))
-
-# creating test variable to call so we can see if the filter works
-#test_ale_filter <- beer_predict %>% filter(str_detect(Style, 'Ale'))
-#view(test_ale_filter$Style) # viewing the filter for effectiveness
-
-# repeating the same process for the IPA
-#test_ipa_filter <- beer_predict %>% filter(str_detect(Style, 'IPA'))
-#view(test_ipa_filter$Style) # viewing the filter for effectiveness 
-
-# using both filters above to create one combo test filter
-#test_combo_filter<- beer_predict %>% filter(str_detect(Style, 'IPA') | str_detect(Style, "Ale"))
-#view(test_combo_filter$Style)
-
-
-# creating the finalized data frame to use for test/train split etc. 
-# beer_predict_fin <- beer_predict %>% filter(str_detect(Style, 'IPA') | str_detect(Style, "Ale"))
-# glimpse(beer_predict_fin)
-```
-
-``` r
-################################### KNN Test type 2 #########################
-
-#checking dimensions to understand what our test/train will look like
-# glimpse(beer_predict_fin)
-# nrow(combine_knn) # total 893 rows
-# round(nrow(combine_knn)*.3) # total 268
-
-
 set.seed(765)
-intrain <- sample(nrow(combine_knn), round(nrow(combine_knn)*.30))
-beer_train <- combine_knn[intrain,]
-beer_test <- combine_knn[-intrain,]
+intrain <- sample(nrow(combine_knn_2), round(nrow(combine_knn_2)*.30))
+beer_train <- combine_knn_2[intrain,]
+beer_test <- combine_knn_2[-intrain,]
 
 
 # setting up the classification 
@@ -751,6 +708,16 @@ t <- table(factor(classification, u), factor(beer_test$Style, u), dnn = c("Predi
 # confusion matrix for more stats on the model
 CM <- confusionMatrix(t)
 
+cat('Accuracy:',CM$overall[1]*100,"%",
+    "\nSensitivity:",CM$byClass[1]*100, "%",
+    "\nSpecificity:",CM$byClass[2]*100, "%")
+```
+
+    ## Accuracy: 99.66102 % 
+    ## Sensitivity: 100 % 
+    ## Specificity: 99.35275 %
+
+``` r
 beer_knn_plot <- as.data.frame(CM$table)
 
 beer_knn_plot$Prediction <- factor(beer_knn_plot$Prediction, levels = rev(levels(beer_knn_plot$Truth)))
@@ -765,94 +732,142 @@ ggplot(beer_knn_plot, aes(Prediction, Truth, fill = (Freq))) +
   ggtitle("Confusion Matrix Categorizing Model Predictions Against Actual Values")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
-
-``` r
-cat('Accuracy:',CM$overall[1]*100,"%",
-    "\nSensitivity:",CM$byClass[1]*100, "%",
-    "\nSpecificity:",CM$byClass[2]*100, "%")
-```
-
-    Accuracy: 84.64 % 
-    Sensitivity: 90.16393 % 
-    Specificity: 76.83398 %
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 #### Key model Statistics:
 
-Accuracy 84.64% - Overall Accuracy of the classifier.
+Accuracy 99.66102% - Overall Accuracy of the classifier.
 
-Sensitivity: 90.16% - (true positive rate) refers to the probability of
-a positive test, conditioned on truly being positive.
+Sensitivity: 100% - (true positive rate) refers to the probability of a
+positive test, conditioned on truly being positive.
 
-Specificity: 76.83% - (true negative rate) refers to the probability of
-a negative test, conditioned on truly being negative.
+Specificity: 99.35275% - (true negative rate) refers to the probability
+of a negative test, conditioned on truly being negative.
+
+## Question of Interest 9-A
+
+#### Report Any Additional Findings
+
+Because Booze and Brews is looking to enter the US Brewery market, we
+thought it would be insightful to visualize data that would provide
+insight into the style of brew which hold the greatest (or least) market
+share. The data show us that 73.53% of the brew offerings are of a
+non-IPA style beverage. This poses an interesting questions such as:
+
+1.  Is the current saturation of IPA high or low compared to consumer
+    demand?
+2.  What is the significance of IPAs in terms of sale numbers as a
+    percentage of goods sold?
+3.  Does the relative low percentage of IPA representation mean there is
+    an opportunity to enter the market with IPA? Or does it simply speak
+    to the demand of the IPA offerings?
+
+These questions serve as an opportunity to gather a new perspective of
+data that can provide invaluable insights into the brewery market and
+some of the demand currently within the market.
 
 ``` r
-################################### KNN finding best K #########################
-
-iterations = 50
-num_of_k = 50
-split_percent = .3
-
-model_accuracy = matrix(nrow = iterations, ncol = num_of_k)
-model_specificity = matrix(nrow = iterations, ncol = num_of_k)
-model_sensitivity = matrix(nrow = iterations, ncol = num_of_k)
-
-for (j in 1:iterations)
-{
-  set.seed(765)
-  intrain2 <- sample(nrow(combine_knn), round(nrow(combine_knn)*split_percent))
-  train2 <- combine_knn[intrain2,]
-  test2 <- combine_knn[-intrain2,]
-  for(i in 1:num_of_k)
-  {
-    classify = knn(train2[,c(3,4)],
-                   test2[,c(3,4)],
-                   train2$Style,
-                   k = i, prob = TRUE)
-    u = union(classify, test2$Style)
-    t = table(factor(classify, u), factor(test2$Style, u))
-    CM = confusionMatrix(t)
-    model_accuracy[j,i] = CM$overall[1]
-    model_specificity[j,i] = CM$byClass[1]
-    model_sensitivity[j,i] = CM$byClass[2]
-  }
-  
-  
-}
-
-mean_accuracy = colMeans(model_accuracy)
-# to determine which level of k provided the best accuracy so that we can tune the model if needed
-# which.max(mean_accuracy)
-mean_specificity = colMeans(model_specificity)
-mean_sensitivity = colMeans(model_sensitivity)
-
-plot(seq(1,num_of_k,1),
-     mean_accuracy, type = "l",
-     xlab = "Kth value 1:50",
-     ylab = "Mean value of measured Accuracy")
+beer_predict$IsIPA = ifelse(beer_predict$IBU > 55 & beer_predict$IBU < 100, "IPA", "Not IPA")
+beer_predict %>% 
+  group_by(IsIPA) %>%
+  dplyr::summarize(count=n()) %>%
+  mutate(percent = (count/sum(count))*100) %>%
+  ggplot() + 
+  geom_bar(aes(y=percent, x = IsIPA, fill = IsIPA),show.legend = FALSE, stat="identity") +
+  scale_fill_manual(values=c("green","red")) +
+  coord_flip() + 
+  ggtitle("Percentage of IPA vs Not-IPA Beer in the United States")+
+  xlab('Condition')+
+  ylab('Percentage %')
 ```
+
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+## Question of Interest 9-B
+
+#### Report Any Additional Findings
+
+Because Booze and Brews is looking to capture Texas market share, we
+thought it would be insightful to visualize data that would give insight
+into the distribution of the type of styling characteristic (IBU, ABV)
+across Cities in Texas. The Data shows us that the median IBU for Texas
+is 33, and the median ABV for Texas is 5.5%. This information along with
+the visualizations below provide us with insights that illustrate which
+of the stylistic profiles are prominent in these geographical areas.
+
+``` r
+extra_data <- beer_brew %>% select(City, State, IBU, ABV, Style, Ounces) %>% filter(State == "TX")
+
+# Scatter plot for ABV for each city in Texas
+beer_brew %>% select(City, State, IBU, ABV, Style, Ounces) %>% filter(State == "TX") %>%
+  ggplot(aes(City, ABV, color = City))+
+  geom_point(show.legend = FALSE) +
+  coord_flip()+
+  ggtitle("Scatter Plot of Alcohol by Volume Offered in Cities Across Texas") +
+  ylab('Alcohol by Volume (ABV) in Percent %') +
+  xlab('Texas Cities')
+```
+
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+#### Here we can see how various ABV values appear within different cities in Texas. Additionally we can see from the scatter plot how the value between 4% - 6% seem to contain the more populated instances compared to above 6%. Below we will see a simiar pattern in the distribution of ABV values for Texas illustrated by a Histogram.
+
+``` r
+# histogram for distribution of ABV in Texas
+extra_data %>% ggplot(aes(ABV*100)) +
+  geom_histogram(aes(fill = 'red'),show.legend = FALSE,bins = 35, color = 'black', alpha = .7)+
+  ggtitle('Histogram of the Distribution of ABV Values in Texas') +
+  xlab("Alcohol by Volume in Percent (%)")+
+  ylab("Count")
+```
+
+    ## Warning: Removed 6 rows containing non-finite values (stat_bin).
 
 ![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-``` r
-plot(seq(1, num_of_k, 1),
-     mean_specificity,
-     type = 'l',
-     xlab = "Kth value 1:50",
-     ylab = "Mean value of measured Specificity")
-```
-
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-2.png)<!-- -->
+#### In the Scatter plot below we can see how various IBU values appear within different cities in Texas. Additionally we can see from the scatter plot how the value between 23-55 seem to contain the more populated instances compared to above 60 where it becomes very seldom to see occurances.
 
 ``` r
-plot(seq(1, num_of_k, 1),
-     mean_sensitivity, type = 'l',
-     xlab = "Kth value 1:50",
-     ylab = "Mean value of measured Sensitivity")
+# Scatter plot for the IBU for each city in TEXAS
+beer_brew %>% select(City, State, IBU, ABV, Style, Ounces) %>% filter( State == "TX") %>%
+  ggplot(aes(City, IBU, color = City)) +
+  geom_point(show.legend = FALSE) +
+  coord_flip()+
+  ggtitle("Scatter Plot of International Bitterness Units in Cities Across Texas") +
+  ylab("International Bitterness Units IBU") +
+  xlab("Texas Citites")
 ```
 
-![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-17-3.png)<!-- -->
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+#### Below we can visually see the same pattern represented in the IBU scatterplot in this IBU Histogram distribution for Texas values of IBU.
+
+``` r
+# histogram for distribution of IBU in Texas 
+extra_data %>% ggplot(aes(IBU))+
+  geom_histogram(aes(fill = 'red'),show.legend = FALSE,bins = 35, color = 'black', alpha = .7)+
+  ggtitle("Histogram of the Distribution of ABV Values in Texas")+
+  xlab("International Bitterness Units (IBUs)")+
+  ylab('Count')
+```
+
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+#### Finally, to provide just a bit of actionable insight, the scatter plot below shows the instances of various styles in Texas Cities. To make this a more insightful plot futher research will be required along with a more specific approach on gathering data to make a meaningful inference. For now we can say that visually there appears to be a relatively stronger occurance of various American Ale style beverages offered in Texas Cities.
+
+``` r
+extra_data %>% ggplot(aes(Style, City))+
+  geom_point(aes(color = City))+
+  coord_flip()+
+  theme(axis.text.x = element_blank())
+```
+
+![](ProjectMarkdown_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+``` r
+#summary(na.omit(extra_data$IBU))
+#summary(na.omit(extra_data$ABV)*100) 
+```
 
 ## Conclusion:
 
@@ -900,3 +915,43 @@ plot(seq(1, num_of_k, 1),
     to predict what the classification of the item in question is.
     Additionally, we created a model to generate the optimal K value so
     that we could fine tune the parameter to generate accurate results.
+
+8.  Because Booze and Brews is looking to enter the US Brewery market,
+    we thought it would be insightful to visualize data that would
+    provide insight into the style of brew which hold the greatest (or
+    least) market share. The data show us that 73.53% of the brew
+    offerings are of a non-IPA style beverage. This poses an interesting
+    questions such as:
+
+-   Is the current saturation of IPA high or low compared to consumer
+    demand?
+-   What is the significance of IPAs in terms of sale numbers as a
+    percentage of goods sold?
+-   Does the relative low percentage of IPA representation mean there is
+    an opportunity to enter the market with IPA? Or does it simply speak
+    to the demand of the IPA offerings?
+
+These questions serve as an opportunity to gather a new perspective of
+data that can provide invaluable insights into the brewery market and
+some of the demand currently within the market.
+
+9.  Finally, Because Booze and Brews is looking to capture Texas market
+    share, we thought it would be insightful to visualize data that
+    would give insight into the distribution of the type of styling
+    characteristic (IBU, ABV) across Cities in Texas. The Data shows us
+    that the median IBU for Texas is 33, and the median ABV for Texas is
+    5.5%. This information along with the visualizations below provide
+    us with insights that illustrate which of the stylistic profiles are
+    prominent in these geographical areas. We have visual evidence that
+    there does seem to exist a specific flavor profile that Texans
+    prefer, and investigating this further could prove to assist in
+    establishing a successful brewery with offerings that appeal to the
+    palete of the target audience.
+
+Thank you for the opportunity to work with your company. We warmly
+welcome any questions, and hope that this data can inspire new questions
+about the Brewery market that will spark the next step in understanding
+the optimal business plan for your success.
+
+Robert Blue \| <robert.blue@smu.edu> Joey Hernandez \|
+<joeyhernandez@smu.edu>
